@@ -32,7 +32,7 @@ public class UserService {
 
     public MessageResponse register(UserCreateRequest request, String token) {
         Integer idRol = jwtUtil.getRol(token);
-        if (idRol != 1) {
+        if (!Integer.valueOf(1).equals(idRol)) {
             throw new RuntimeException("Solo administradores pueden registrar usuarios");
         }
 
@@ -122,7 +122,7 @@ public class UserService {
 
     public MessageResponse changeStatus(Integer idUsuario, String token) {
         Integer idRol = jwtUtil.getRol(token);
-        if (idRol != 1) {
+        if (!Integer.valueOf(1).equals(idRol)) {
             throw new RuntimeException("Solo administradores pueden cambiar estatus");
         }
 

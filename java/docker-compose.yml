@@ -21,7 +21,9 @@ services:
       retries: 5
 
   auth-service:
-    build: ./authService/authService/
+    build:
+      context: ./authService/authService/
+      dockerfile: dockerfile
     container_name: auth-service
     depends_on:
       postgres-user-db:
@@ -34,7 +36,9 @@ services:
       SPRING_DATASOURCE_PASSWORD: postgres
 
   user-service:
-    build: ./userService/userService/
+    build:
+      context: ./userService/userService/
+      dockerfile: dockerfile
     container_name: user-service
     depends_on:
       postgres-user-db:

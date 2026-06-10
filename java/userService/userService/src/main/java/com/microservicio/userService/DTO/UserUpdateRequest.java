@@ -25,6 +25,30 @@ public class UserUpdateRequest {
 
     private String telefono;
 
+    public void setIdRol(Integer idRol) {
+        this.idRol = idRol;
+    }
+
+    public void setIdTipoUsuario(Integer idTipoUsuario) {
+        this.idTipoUsuario = idTipoUsuario;
+    }
+
+    public void setIdProgramaEducativo(Integer idProgramaEducativo) {
+        this.idProgramaEducativo = idProgramaEducativo;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setApellidoPaterno(String apellidoPaterno) {
+        this.apellidoPaterno = apellidoPaterno;
+    }
+
+    public void setApellidoMaterno(String apellidoMaterno) {
+        this.apellidoMaterno = apellidoMaterno;
+    }
+
     public Integer getIdRol() {
         return idRol;
     }
@@ -53,8 +77,16 @@ public class UserUpdateRequest {
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getTelefono() {
         return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
     
     
