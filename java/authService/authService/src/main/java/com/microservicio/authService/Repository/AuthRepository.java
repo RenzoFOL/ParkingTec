@@ -16,7 +16,23 @@ import org.apache.ibatis.annotations.Select;
 public interface AuthRepository {
 
     @Select("""
-        SELECT *
+        SELECT
+            "idUsuario",
+            nombre,
+            "apellidoPaterno",
+            "apellidoMaterno",
+            "claveUsuario",
+            email,
+            telefono,
+            username,
+            password,
+            estatus = B'1' AS estatus,
+            "idRol",
+            rol,
+            "idTipoUsuario",
+            "tipoUsuario",
+            "idProgramaEducativo",
+            "programaEducativo"
         FROM "usuarioFullInfo"
         WHERE username = #{username}
     """)
