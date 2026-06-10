@@ -4,17 +4,21 @@
  */
 package com.microservicio.authService.Service;
 
+import com.microservicio.authService.DTO.LoginRequest;
+import com.microservicio.authService.DTO.LoginResponse;
+import com.microservicio.authService.Entity.Usuario;
+import com.microservicio.authService.Repository.AuthRepository;
+import com.microservicio.authService.Security.JwtUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.stereotype.Service;
+
+
 /**
  *
  * @author renol
  */
-import com.microservicio.authService.dto.*;
-import com.microservicio.authService.AuthRepository;
-import com.microservicio.authService..JwtUtil;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+ 
 @Service
 public class AuthService {
 
@@ -24,55 +28,45 @@ public class AuthService {
     @Autowired
     private JwtUtil jwtUtil;
 
-    public LoginResponse login(LoginRequest request){
-        var usuario = repository.buscarPorUsuario(request.getUsuario());
+    public LoginResponse login(LoginRequest request) {
+        Usuario usuario = repository.buscarPorUsuario(request.getUsuario());
 
-        if(usuario == null){
-            throw new RuntimeException("Usuario no existe");
+        if (usuario == null) {
+            throw new RuntimeException("Usuario no encontrado");
         }
 
-        if(!usuario.getPassword().equals(request.getPassword())){
+        if (!usuario.getEstatus()) {
+            throw new RuntimeException("Usuario inactivo");
+        }
+
+        boolean passwordValida =
+                BCrypt.checkpw(request.getPassword(), usuario.getPassword());
+
+        if (!passwordValida) {
             throw new RuntimeException("Contraseña incorrecta");
         }
 
-        String token =
-                jwtUtil.generarToken(
-                        usuario.getIdUsuario(),
-                        usuario.getUsuario(),
-                        usuario.getRol()
-                );
-
-        LoginResponse response =
-                new LoginResponse();
-
-        response.setIdUsuario(
-                usuario.getIdUsuario()
-        );
-
-        response.setIdRol(
-                usuario.getIdRol()
-        );
-
-        response.setRol(
-                usuario.getRol()
-        );
-
-        response.setUsuario(
-                usuario.getUsuario()
-        );
-
-        response.setNombreCompleto(
-                usuario.getNombre()
-        );
-
-        response.setIdTipoUsuario(
-                usuario.getIdTipoUsuario()
-        );
-
-        response.setTipoUsuario(
+        String token = jwtUtil.generarToken(
+                usuario.getIdUsuario(),
+                usuario.getUsername(),
+                usuario.getIdRol(),
+                usuario.getRol(),
+                usuario.getIdTipoUsuario(),
                 usuario.getTipoUsuario()
         );
 
+        LoginResponse response = new LoginResponse();
+        response.setIdUsuario(usuario.getIdUsuario());
+        response.setIdRol(usuario.getIdRol());
+        response.setRol(usuario.getRol());
+        response.setUsuario(usuario.getUsername());
+        response.setNombreCompleto(
+                usuario.getNombre() + " " +
+                usuario.getApellidoPaterno() + " " +
+                (usuario.getApellidoMaterno() != null ? usuario.getApellidoMaterno() : "")
+        );
+        response.setIdTipoUsuario(usuario.getIdTipoUsuario());
+        response.setTipoUsuario(usuario.getTipoUsuario());
         response.setToken(token);
 
         return response;

@@ -5,13 +5,13 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>4.0.6</version>
+		<version>3.3.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.microservicio</groupId>
 	<artifactId>authService</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name/>
+	<name>authService</name>
 	<description/>
 	<url/>
 	<licenses>
@@ -31,16 +31,26 @@
 	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-webmvc</artifactId>
-		</dependency>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-web</artifactId>
+                </dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-webmvc-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-                
+                <dependency>
+                        <groupId>org.mybatis.spring.boot</groupId>
+                        <artifactId>mybatis-spring-boot-starter</artifactId>
+                        <version>3.0.3</version>
+                </dependency>
+
+                <dependency>
+                        <groupId>org.postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                </dependency>
+
+                <dependency>
+                        <groupId>org.springframework.security</groupId>
+                        <artifactId>spring-security-crypto</artifactId>
+                </dependency>
+
                 <dependency>
                         <groupId>io.jsonwebtoken</groupId>
                         <artifactId>jjwt-api</artifactId>
@@ -59,6 +69,12 @@
                         <artifactId>jjwt-jackson</artifactId>
                         <version>0.12.5</version>
                         <scope>runtime</scope>
+                </dependency>
+
+                <dependency>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-test</artifactId>
+                        <scope>test</scope>
                 </dependency>
 	</dependencies>
 

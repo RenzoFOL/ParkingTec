@@ -4,20 +4,19 @@
  */
 package com.microservicio.authService.Controller;
 
+import com.microservicio.authService.DTO.*;
+import com.microservicio.authService.Service.AuthService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
 /**
  *
  * @author renol
  */
-import com.microservicio.authService.dto.*;
-import com.microservicio.authService.AuthService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-
+    
     @Autowired
     private AuthService service;
 
