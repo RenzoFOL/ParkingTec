@@ -1,7 +1,8 @@
+import os
 from fastapi import Header, HTTPException
 import jwt
 
-SECRET_KEY = "mi_clave"
+SECRET_KEY = os.getenv("JWT_SECRET", "RenzoIvanMichelle20232027SeguridadExtra!!")
 
 def validate_token(authorization: str = Header(...)):
     try:
@@ -15,5 +16,5 @@ def validate_token(authorization: str = Header(...)):
     except Exception:
         raise HTTPException(
             status_code=401,
-            detail="Token inválido"
+            detail="Token invalido"
         )

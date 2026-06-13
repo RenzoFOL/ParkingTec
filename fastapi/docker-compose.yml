@@ -1,0 +1,42 @@
+version: '3.9'
+
+services:
+
+  mysql-vehicle-db:
+    image: mysql:8.0
+    container_name: mysql-vehicle-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: sicaevehiculo
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./db/sicaevehiculo.sql:/docker-entrypoint-initdb.d/init.sql
+      - mysql-vehicle-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  vehicle-service:
+    build:
+      context: ./VehicleService
+      dockerfile: dockerfile
+    container_name: vehicle-service
+    depends_on:
+      mysql-vehicle-db:
+        condition: service_healthy
+    ports:
+      - "8003:8000"
+    environment:
+      DB_HOST: mysql-vehicle-db
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: sicaevehiculo
+      JWT_SECRET: RenzoIvanMichelle20232027SeguridadExtra!!
+
+volumes:
+  mysql-vehicle-data:
