@@ -80,8 +80,9 @@ public interface UserRepository {
             "programaEducativo"
         FROM "usuarioFullInfo"
         WHERE "idUsuario" = #{id}
+        LIMIT 1
     """)
-    Usuario buscarPorId(Integer id);
+    Usuario buscarPorId(@Param("id") Integer id);
 
     @Select("""
         SELECT
