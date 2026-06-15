@@ -80,6 +80,7 @@ public interface UserRepository {
             "programaEducativo"
         FROM "usuarioFullInfo"
         WHERE "idUsuario" = #{id}
+        LIMIT 1
     """)
     Usuario buscarPorId(Integer id);
 
