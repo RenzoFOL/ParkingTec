@@ -18,7 +18,8 @@ class VehicleRepository:
                 placa,
                 color,
                 anio,
-                descripcion
+                descripcion,
+                estatus
             FROM vehiculofullinfo
             WHERE idUsuario = %s
         """
@@ -30,6 +31,7 @@ class VehicleRepository:
         conn.close()
 
         return resultado
+    
 
     def buscar_por_placa(self, placa):
         conn = get_connection()
@@ -48,7 +50,7 @@ class VehicleRepository:
         conn.close()
 
         return resultado
-
+    
     def contar_activos(self, id_usuario):
         conn = get_connection()
         cursor = conn.cursor()
@@ -57,6 +59,7 @@ class VehicleRepository:
             SELECT COUNT(*) AS total
             FROM vehiculo
             WHERE idUsuario = %s
+            AND estatus = 1
         """
 
         cursor.execute(sql, (id_usuario,))
@@ -66,7 +69,7 @@ class VehicleRepository:
         conn.close()
 
         return resultado["total"]
-
+    
     def obtener_por_id(self, id_vehiculo):
         conn = get_connection()
         cursor = conn.cursor()
@@ -98,11 +101,12 @@ class VehicleRepository:
                 placa,
                 color,
                 anio,
-                descripcion
+                descripcion,
+                estatus
             )
             VALUES
             (
-                %s,%s,%s,%s,%s,%s,%s
+                %s,%s,%s,%s,%s,%s,%s,%s
             )
         """
 
@@ -115,7 +119,8 @@ class VehicleRepository:
                 datos["placa"],
                 datos["color"],
                 datos["anio"],
-                datos["descripcion"]
+                datos["descripcion"],
+                datos["estatus"]
             )
         )
 
@@ -149,6 +154,30 @@ class VehicleRepository:
                 datos["color"],
                 datos["anio"],
                 datos["descripcion"],
+                id_vehiculo
+            )
+        )
+
+        conn.commit()
+
+        cursor.close()
+        conn.close()
+
+    
+    def actualizar_estatus(self, id_vehiculo, estatus):
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        sql = """
+            UPDATE vehiculo
+            SET estatus = %s
+            WHERE idVehiculo = %s
+        """
+
+        cursor.execute(
+            sql,
+            (
+                estatus,
                 id_vehiculo
             )
         )

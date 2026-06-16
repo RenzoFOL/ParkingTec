@@ -12,17 +12,19 @@ class VehicleService:
 
     def registrar(self, vehicle, id_usuario):
         placa_existente = self.repository.buscar_por_placa(vehicle.placa)
+
         if placa_existente:
             raise HTTPException(
                 status_code=400,
                 detail="Ya existe un vehiculo con esa placa"
             )
 
-        registrados = self.repository.contar_activos(id_usuario)
-        if registrados >= 4:
+        activos = self.repository.contar_activos(id_usuario)
+
+        if activos >= 4:
             raise HTTPException(
                 status_code=400,
-                detail="Solo puede tener 4 vehiculos registrados"
+                detail="Solo puede tener 4 vehiculos activos"
             )
 
         datos = {
@@ -32,8 +34,10 @@ class VehicleService:
             "placa": vehicle.placa,
             "color": vehicle.color,
             "anio": vehicle.anio,
-            "descripcion": vehicle.descripcion
+            "descripcion": vehicle.descripcion,
+            "estatus": True
         }
+
         self.repository.guardar(datos)
 
         return {
@@ -95,7 +99,21 @@ class VehicleService:
                 detail="No tiene permisos para modificar este vehiculo"
             )
 
-        raise HTTPException(
-            status_code=400,
-            detail="La base de datos no contiene estatus para vehiculo"
+        if estatus:
+            activos = self.repository.contar_activos(id_usuario)
+
+            if activos >= 4:
+                raise HTTPException(
+                    status_code=400,
+                    detail="Solo puede tener 4 vehiculos activos"
+                )
+
+        self.repository.actualizar_estatus(
+            vehicle_id,
+            estatus
         )
+
+        return {
+            "success": True,
+            "message": "Estatus actualizado correctamente"
+        }

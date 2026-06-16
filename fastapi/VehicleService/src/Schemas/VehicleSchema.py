@@ -31,3 +31,4 @@ class VehicleResponse(BaseModel):
     color: str
     anio: int
     descripcion: str | None
+    estatus: bool
