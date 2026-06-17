@@ -1,0 +1,43 @@
+services:
+
+  mysql-parking-db:
+    image: mysql:8.0
+    container_name: mysql-parking-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: sicaeestacionamiento
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql-parking-data:/var/lib/mysql
+      - ./db/sicaeestacionamiento.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  parking-service:
+    build:
+      context: ./ParkingService
+      dockerfile: dockerfile
+    container_name: parking-service
+    depends_on:
+      mysql-parking-db:
+        condition: service_healthy
+    ports:
+      - "8004:8003"
+    environment:
+      DB_HOST: mysql-parking-db
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: sicaeestacionamiento
+      USER_SERVICE_URL: http://host.docker.internal:8080
+      VEHICLE_SERVICE_URL: http://host.docker.internal:8003
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  mysql-parking-data:

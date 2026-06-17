@@ -3,6 +3,10 @@ from src.Repository.ParkingRepository import ParkingRepository
 from src.Schemas.ParkingSchema import EntradaVehiculo
 from datetime import datetime, timezone
 import math
+import os
+
+USER_SERVICE_URL = os.getenv("USER_SERVICE_URL", "http://host.docker.internal:8080")
+VEHICLE_SERVICE_URL = os.getenv("VEHICLE_SERVICE_URL", "http://host.docker.internal:8003")
 
 class ParkingService:
     def __init__(self):
@@ -28,7 +32,7 @@ class ParkingService:
                 "Accept": "application/json"
             }
             
-            url_user = "http://127.0.0.1:8080/users/profile"
+            url_user = f"{USER_SERVICE_URL}/users/profile"
             resp_user = requests.get(url_user, headers=headers_java)
 
             if resp_user.status_code == 500:
@@ -54,7 +58,7 @@ class ParkingService:
         headers_python = {"Authorization": token}
         
         try:
-            url_vehicles = "http://127.0.0.1:8000/vehicles/list"
+            url_vehicles = f"{VEHICLE_SERVICE_URL}/vehicles/list"
             resp_veh = requests.get(url_vehicles, headers=headers_python) 
                         
             if resp_veh.status_code == 200:
@@ -90,7 +94,7 @@ class ParkingService:
                 "Authorization": f"Bearer {token_limpio}",
                 "Accept": "application/json"
             }
-            url_user = "http://127.0.0.1:8080/users/profile"
+            url_user = f"{USER_SERVICE_URL}/users/profile"
             resp_user = requests.get(url_user, headers=headers_java)
 
             if resp_user.status_code == 500:
@@ -115,7 +119,7 @@ class ParkingService:
         headers_python = {"Authorization": token}
         
         try:
-            url_vehicles = "http://127.0.0.1:8000/vehicles/list"
+            url_vehicles = f"{VEHICLE_SERVICE_URL}/vehicles/list"
             resp_veh = requests.get(url_vehicles, headers=headers_python) 
                         
             if resp_veh.status_code == 200:
