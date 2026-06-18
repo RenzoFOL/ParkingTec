@@ -167,8 +167,6 @@ CACHE 1
 -- ----------------------------
 -- Records of usuario
 -- ----------------------------
-INSERT INTO "public"."usuario" VALUES (1, 'Administrador', 'fei', NULL, 'fei', 'admin@example.com', NULL, 'admin', '$2a$10$kOs/guKI1ozK1YV3wcfZIe3gbQe3kdHnLazKo1sA4zAdDxHBlEZXS', '1', 1, 1, 3, '2026-05-25 19:30:55', NULL);
-
 INSERT INTO "public"."usuario" (
   "nombre",
   "apellidoPaterno",

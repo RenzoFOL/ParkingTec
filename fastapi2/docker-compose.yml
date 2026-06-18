@@ -34,7 +34,7 @@ services:
       DB_USER: root
       DB_PASSWORD: root
       DB_NAME: sicaeestacionamiento
-      USER_SERVICE_URL: http://host.docker.internal:8080
+      USER_SERVICE_URL: http://host.docker.internal:8082
       VEHICLE_SERVICE_URL: http://host.docker.internal:8003
     extra_hosts:
       - "host.docker.internal:host-gateway"

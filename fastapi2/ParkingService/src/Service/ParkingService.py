@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 import math
 import os
 
-USER_SERVICE_URL = os.getenv("USER_SERVICE_URL", "http://host.docker.internal:8080")
+USER_SERVICE_URL = os.getenv("USER_SERVICE_URL", "http://host.docker.internal:8082")
 VEHICLE_SERVICE_URL = os.getenv("VEHICLE_SERVICE_URL", "http://host.docker.internal:8003")
 
 class ParkingService:
